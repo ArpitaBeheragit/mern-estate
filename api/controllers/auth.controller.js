@@ -51,19 +51,27 @@ export const google=async(req, res, next)=>{
         next(error)
     }
 }
-export const getProfile = (req, res) => {
-    const { token } = req.cookies;
-    if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
-            if (err) {
-                console.error("Token verification failed:", err);
-                return res.status(401).json({ error: "Unauthorized" });
-            }
-            console.log("User details:", user);
-            res.json(user);
-        });
-    } else {
+export const getProfile = async (req, res) => {
+    const { access_token } = req.cookies;
+    if (!access_token) {
         console.log("Token not found in cookies");
-        res.json(null);
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    try {
+        const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+        const { id } = decoded;
+        
+        const user = await User.findById(id);
+        if (!user) {
+            console.error("User not found");
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        console.log("User details:", user);
+        res.json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 }

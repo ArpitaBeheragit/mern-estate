@@ -5,11 +5,11 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
     const [user, setUser] = useState({});
-
     useEffect(() => {
         async function fetchUserData() {
             try {
                 const { data } = await axios.get('/profile');
+                console.log(data+"from createcontext");
                 setUser(data);
             } catch (error) {
                 console.error("Error fetching user profile:", error);

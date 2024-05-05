@@ -3,9 +3,14 @@ import { useContext } from 'react';
 import { UserContext } from '../context/userContext';
 import profileimg from "../assets/profileimg.png";
 import { Link } from 'react-router-dom';
+
 export default function Profile() {
-  const {user}=useContext(UserContext);
-  console.log(user);
+  const { user } = useContext(UserContext);
+
+  // Add a conditional rendering to check if the user data has been fetched
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='p-3 mt-10 max-w-lg mx-auto gap-4'>

@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth';
-
+import axios from 'axios';
 
 
 const SignIn = () => {
   const [formdata, setFormdata]=useState({})
   const [error, setError]=useState(null);
   const [loading, setLoading]=useState(false);
-  const navigate= useNavigate();
+  const [user, setUser]=useState(null)
+    const navigate= useNavigate();
   const handleChange=(e)=>{
     setFormdata({
       ...formdata,
@@ -36,6 +37,7 @@ const handleSubmit=async (e)=>{
   setLoading(false);
   setError(null);
   console.log(data);
+  setUser(data);
   navigate('/profiles');
     
   } catch (error) {

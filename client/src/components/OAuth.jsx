@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {GoogleAuthProvider, getAuth, signInWithPopup} from 'firebase/auth' 
 import { app } from '../../firebase'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 const OAuth = () => {
+  const [user,setuser]=useState(null);
   const navigate=useNavigate()
     const handleGoogleClick=async()=>{
         try{
@@ -18,7 +20,13 @@ const OAuth = () => {
               body:JSON.stringify({name:result.user.displayName, email: result.user.email })
             })
             const data=await res.json();
-            navigate('/')
+            
+            if (data.success) {
+              const { userData } = await axios.get('/profile');
+              setuser(userData);
+              navigate('/profiles')
+          }
+            
         }catch(error){
             console.log("Could not sign in with google");
         }
