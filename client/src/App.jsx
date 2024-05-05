@@ -5,6 +5,8 @@ import Header from './components/Header'
 import Home from './pages/Home'
 import Profile from './pages/Profile';
 import { UserContextProvider } from './context/userContext'
+import CreateListing from './pages/CreateListing';
+import Search from './pages/Search';
 
 
 export default function App() {
@@ -17,6 +19,9 @@ export default function App() {
   <Route path='/profiles' element={<Profile />} />
     <Route path="/signup" element={<SignUp />}></Route>
     <Route path="/signin" element={<SignIn />}></Route>
+    <Route path='/createlisting' element={<CreateListing />} />
+        <Route path='/search' element={<Search />} />
+
   </Routes>
   </BrowserRouter>
   </UserContextProvider>

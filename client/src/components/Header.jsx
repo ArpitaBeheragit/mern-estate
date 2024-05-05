@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross2 } from "react-icons/rx";
 const Header = () => {
+    const navigate=useNavigate()
     const[hamburger,setHamburger]=useState(false);
     if(hamburger){
         return(
@@ -27,12 +28,13 @@ const Header = () => {
                 </div>
                 <div className='sm:hidden md:flex'>
                     <form action='' className='bg-slate-100 p-3 rounded-lg flex items-center'>
+                        
                         <input
                             type='text'
                             placeholder='Search...'
                             className='bg-transparent focus:outline-none w-24 sm:w-64'
                         />
-                        <button>
+                        <button onClick={()=>navigate("/search")}>
                             <FaSearch className='text-slate-600' />
                         </button>
                     </form>
