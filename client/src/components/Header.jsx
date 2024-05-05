@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross2 } from "react-icons/rx";
@@ -37,10 +38,14 @@ const Header = () => {
                     </form>
                 </div>
                 <div className='flex justify-between gap-5 sm:hidden md:flex'>
-                    <div className='hover:underline cursor-pointer'>Home</div>
-                    <div className='hover:underline cursor-pointer'>About</div>
-                    <div className='hover:underline cursor-pointer'>Listing</div>
-                    <div className='hover:underline cursor-pointer'>Sign in</div>
+                    <div className='hover:underline cursor-pointer'>
+                        <Link to="/">Home</Link></div>
+                    <div className='hover:underline cursor-pointer'>
+                        <Link to="/about">About</Link></div>
+                    <div className='hover:underline cursor-pointer'>
+                        <Link to="/listing">Listing</Link></div>
+                    <div className='hover:underline cursor-pointer'>
+                        <Link to="/signin">Sign in</Link></div>
                 </div>
                 <div className='md:hidden sm:flex'>
                     <RxHamburgerMenu className='custom-icon' onClick={()=>setHamburger(true)}/>

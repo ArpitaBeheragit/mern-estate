@@ -4,7 +4,7 @@ import profileimg from "../assets/profileimg.png";
 export default function Profile() {
   return (
     <div className='p-3 max-w-lg mx-auto gap-4'>
-        <h1 className='text-3xl font-semibold text-center mt-16 my-7'>Profile</h1>
+        <h1 className='text-3xl font-semibold text-center mt-14 my-7'>Profile</h1>
         <form className='flex mt-10 flex-col'>
             <img src={profileimg} alt="profile" 
             className='rounded-full h-28 w-28 object-cover cursor-pointer self-center mt-2'/>
