@@ -51,3 +51,19 @@ export const google=async(req, res, next)=>{
         next(error)
     }
 }
+export const getProfile = (req, res) => {
+    const { token } = req.cookies;
+    if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+            if (err) {
+                console.error("Token verification failed:", err);
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+            console.log("User details:", user);
+            res.json(user);
+        });
+    } else {
+        console.log("Token not found in cookies");
+        res.json(null);
+    }
+}
