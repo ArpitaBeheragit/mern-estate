@@ -1,16 +1,20 @@
 import React from 'react'
 import { useContext } from 'react';
-import { UserContext } from '../context/userContext';
+import { useAuth } from '../context/userContext';
 import profileimg from "../assets/profileimg.png";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Profile() {
-  const { user } = useContext(UserContext);
+  const navigate=useNavigate();
+  const authContext = useAuth()
+    console.log(authContext)
+    const { isLoggedIn, logout, user } = authContext
+    const logoutUser = () =>{
+      logout()
+      navigate("/")
+    }
+  console.log(user);
 
-  // Add a conditional rendering to check if the user data has been fetched
-  if (!user) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className='p-3 mt-10 max-w-lg mx-auto gap-4'>
@@ -19,7 +23,7 @@ export default function Profile() {
             <img src={profileimg} alt="profile" 
             className='rounded-full h-28 w-28 object-cover cursor-pointer self-center mt-2'/>
             <input type="text" placeholder='username' id='username'
-            className='border mt-8 p-3 rounded-lg' defaultValue={user.username}/>
+            className='border mt-8 p-3 rounded-lg' defaultValue={user.name}/>
             <input type="email" placeholder='email' id='email'
             className='border mt-2 p-3 rounded-lg' defaultValue={user.email}/>
             <input type="text" placeholder='password' id='password'
@@ -29,7 +33,7 @@ export default function Profile() {
         </form>
         <div className='flex justify-between mt-5'>
           <span className='text-red-800 cursor-pointer'>Delete account</span>
-          <span className='text-red-800 cursor-pointer'>Sign out</span>
+          <span className='text-red-800 cursor-pointer' onClick={logoutUser}>Sign out</span>
         </div>
     </div>
   )

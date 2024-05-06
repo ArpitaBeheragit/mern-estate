@@ -4,14 +4,14 @@ import SignIn from './pages/SignIn'
 import Header from './components/Header'
 import Home from './pages/Home'
 import Profile from './pages/Profile';
-import { UserContextProvider } from './context/userContext'
+
 import CreateListing from './pages/CreateListing';
 import Search from './pages/Search';
 
 
 export default function App() {
   return (
-  <UserContextProvider>
+  
   <BrowserRouter>
   <Header />
   <Routes>
@@ -24,6 +24,6 @@ export default function App() {
 
   </Routes>
   </BrowserRouter>
-  </UserContextProvider>
+  
   )
 }
