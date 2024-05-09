@@ -62,15 +62,19 @@ const handleSubmit = async (e) =>{
     password: passRef.current.value,
     
   }
-  console.log(newUSer);
+  // console.log(newUSer);
   setLoading(true);
   const res = await userService.registerUser(newUSer);
-  console.log(res+"res");
+  // console.log(res+"res");
   if(res.status){
     setMessage("New User Added")
+    usernameRef.current.value=""
+    emailRef.current.value=""
+   passRef.current.value=""
     setLoading(false);
     navigate('/signin')
   } else {
+    setLoading(false);
     setMessage(res.message)
   }
 }

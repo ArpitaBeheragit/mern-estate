@@ -65,16 +65,19 @@ const handleSubmit = async (e) =>{
     password: passRef.current.value,
     
   }
-  console.log(user);
+  // console.log(user);
   setLoading(true);
   const res = await userService.loginUser(user);
-  console.log(res.data);
+  // console.log(res.data);
   if(res.status){
     setMessage("Login Successfull")
+    emailRef.current.value=""
+    passRef.current.value=""
     setLoading(false);
     login(res.data.token)
     navigate('/profiles')
   } else {
+    setLoading(false);
     setMessage(res.message)
   }
 }
