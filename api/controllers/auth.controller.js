@@ -52,17 +52,18 @@ export const google=async(req, res, next)=>{
     }
 }
 export const getProfile = async (req, res) => {
-    const { access_token } = req.cookies;
-    if (!access_token) {
-        console.log("Token not found in cookies");
-        return res.status(401).json({ error: "Unauthorized" });
-    }
+    // const { access_token } = req.cookies;
+    // if (!access_token) {
+    //     console.log("Token not found in cookies");
+    //     return res.status(401).json({ error: "Unauthorized" });
+    // }
 
     try {
-        const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
-        const { id } = decoded;
+        // const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
+        // const { id } = decoded.user;
         
-        const user = await User.findById(id);
+        
+        const user = await User.findById(req.user.id);
         if (!user) {
             console.error("User not found");
             return res.status(404).json({ error: "User not found" });

@@ -3,8 +3,13 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross2 } from "react-icons/rx";
+import { useAuth } from '../context/userContext';
+import profileimg from "../assets/profileimg.png";
 const Header = () => {
     const navigate=useNavigate()
+    const authContext = useAuth()
+    console.log(authContext);
+    const { isLoggedIn, logout, user } = authContext
     const[hamburger,setHamburger]=useState(false);
     if(hamburger){
         return(
@@ -45,9 +50,21 @@ const Header = () => {
                     <div className='hover:underline cursor-pointer'>
                         <Link to="/about">About</Link></div>
                     <div className='hover:underline cursor-pointer'>
-                        <Link to="/listing">Listing</Link></div>
-                    <div className='hover:underline cursor-pointer'>
-                        <Link to="/signin">Sign in</Link></div>
+                        <Link to="/userlisting">Listing</Link></div>
+                        {isLoggedIn ? (
+                            <a href="/profiles">
+                            
+              <img
+                
+                className='rounded-full h-7 w-7 object-cover'
+                src={profileimg}
+                alt='profile'
+              ></img></a>
+            ) : (
+                <div className='hover:underline cursor-pointer'>
+                <Link to="/signin">Sign in</Link></div>
+            )}
+                    
                 </div>
                 <div className='md:hidden sm:flex'>
                     <RxHamburgerMenu className='custom-icon' onClick={()=>setHamburger(true)}/>

@@ -75,7 +75,7 @@ const handleSubmit = async (e) =>{
     passRef.current.value=""
     setLoading(false);
     login(res.data.token)
-    navigate('/profiles')
+    navigate('/')
   } else {
     setLoading(false);
     setMessage(res.message)

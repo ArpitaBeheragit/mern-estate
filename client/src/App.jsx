@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 
 import CreateListing from './pages/CreateListing';
 import Search from './pages/Search';
+import Userlisting from './pages/Userlisting'
 
 
 export default function App() {
@@ -20,7 +21,8 @@ export default function App() {
     <Route path="/signup" element={<SignUp />}></Route>
     <Route path="/signin" element={<SignIn />}></Route>
     <Route path='/createlisting' element={<CreateListing />} />
-        <Route path='/search' element={<Search />} />
+    <Route path='/search' element={<Search />} />
+    <Route path='/userlisting' element={<Userlisting />} />
 
   </Routes>
   </BrowserRouter>

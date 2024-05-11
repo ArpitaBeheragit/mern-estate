@@ -1,18 +1,62 @@
 import  mongoose  from 'mongoose'
 import  ListingModel from '../models/listing.model.js'
+import { errorHandler } from "../utills/error.js";
 
-export const getAllListing = async(req, res)=>{
+export const getAllListing = async (req, res, next) => {
     try {
-        const listings = await ListingModel.find()
-        res.status(200).json(listings)
+      const limit = parseInt(req.query.limit) || 9;
+      const startIndex = parseInt(req.query.startIndex) || 0;
+      let offer = req.query.offer;
+  
+      if (offer === undefined || offer === 'false') {
+        offer = { $in: [false, true] };
+      }
+  
+      let furnished = req.query.furnished;
+  
+      if (furnished === undefined || furnished === 'false') {
+        furnished = { $in: [false, true] };
+      }
+  
+      let parking = req.query.parking;
+  
+      if (parking === undefined || parking === 'false') {
+        parking = { $in: [false, true] };
+      }
+  
+      let type = req.query.type;
+  
+      if (type === undefined || type === 'all') {
+        type = { $in: ['sale', 'rent'] };
+      }
+  
+      const searchTerm = req.query.searchTerm || '';
+  
+      const sort = req.query.sort || 'createdAt';
+  
+      const order = req.query.order || 'desc';
+  
+      const listings = await ListingModel.find({
+        name: { $regex: searchTerm, $options: 'i' },
+        offer,
+        furnished,
+        parking,
+        type,
+      })
+        .sort({ [sort]: order })
+        .limit(limit)
+        .skip(startIndex);
+  
+      return res.status(200).json(listings);
     } catch (error) {
-        res.status(500).json(error)
+      next(error);
     }
-}
+  };
 
 export const addListing = async (req, res)=>{
     // const data = req.body
     // console.log(data);
+    
     try {
         let listing = await ListingModel.create(req.body)
         
@@ -22,27 +66,24 @@ export const addListing = async (req, res)=>{
     }
 }
 
-export const getListingById = async(req, res)=>{
-    // const data = req.params
-    try {
-        const { id } = req.params
-        console.log(id);
-        const listing= await ListingModel.find({"_id": id})
-        if(listing.length >0){
-            res.status(200).json(listing)
-        } else {
-            res.status(404).json({"message": "Record not found. Check ID and try again."})
+
+    export const getListingById = async (req, res, next) => {
+        try {
+          const listing = await ListingModel.find({ userRef: req.params.id });
+          if (!listing) {
+            return next(errorHandler(404, 'Record not found!'));
+          }
+          res.status(200).json(listing);
+        } catch (error) {
+          next(error);
         }
-    } catch (error) {
-        if(error.name === "CastError"){
-            res.status(400).json({"message": "Invalid Id"})
-        } else {
-            res.status(500).json(error)
-        }
-    }
-}
+      };
+
 
 export const updateListing = async(req, res)=>{
+    if (req.user.id !== req.params.id)
+        return next(errorHandler(401, "You are not authorized"));
+     
     try {
         const { id } = req.params
         const listing = await ListingModel.findOneAndUpdate({"_id": id}, req.body, {new: true})
@@ -61,6 +102,9 @@ export const updateListing = async(req, res)=>{
 }
 
 export const deleteListing = async(req, res)=>{
+    if (req.user.id !== req.params.id)
+        return next(errorHandler(401, "You are not authorized"));
+     
     try {
         const { id} = req.params
         const listing = await ListingModel.findOneAndDelete({"_id": id})

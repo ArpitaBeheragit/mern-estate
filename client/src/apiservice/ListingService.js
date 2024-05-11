@@ -1,8 +1,9 @@
 import axios from 'axios'
+import { getToken } from '../utils/HelperFunction';
 
 class ListingService {
     constructor(){
-        this.api = import.meta.env.VITE_API
+        this.api = "http://localhost:3000/"
     }
 
     async allListing(){
@@ -16,31 +17,25 @@ class ListingService {
         }
     }
 
-    async ListingDetails(id){
+    async getAllListingById(id){
         try {
-            const res = await axios.get(this.api+"listing/details/"+id)
+            const res = await axios.get(this.api+"listing/"+id)
             console.log(res.data);
-            return {status: true, data: res.data[0]}
+            return {status: true, data: res.data}
         } catch (error) {
             console.log(error);
             return {status: false, error}
         }
     }
 
-    // async addListing(listing){
-    //     try {
-    //         // const res = await axios.post(this.api+"listing", listing)
-    //          const res = await axios.post("http://localhost:3000/listing", listing)
-    //         console.log(res.data);
-    //         return {status: true, data: res.data}
-    //     } catch (error) { 
-    //         console.log(error);
-    //         return {status: false, error}
-    //     } 
-    // }
+   
     async addListing(listing){
         try {
-            const res = await axios.post("http://localhost:3000/listing", listing)
+            const res = await axios.post("http://localhost:3000/listing", listing,{
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            })
             console.log("Response data:", res.data);
             return {status: true, data: res.data}
         } catch (error) { 

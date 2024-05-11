@@ -18,25 +18,21 @@ const listingSchema = new mongoose.Schema(
         type: Number,
         required:true,
     },
-    sale: {
-      type: Boolean,
-      // required: true,
+    type: {
+      type: String,
+      required: true,
     },
-    rent: {
+    parking: {
       type: Boolean,
-      // required: true,
-    },
-    park: {
-      type: Boolean,
-      // required: true,
+      required: true,
     },
     furnished: {
       type: Boolean,
-      // required: true,
+      required: true,
     },
     offer: {
       type: Boolean,
-      // required: true,
+      required: true,
     },
     bedrooms: {
       type: Number,
@@ -53,17 +49,22 @@ const listingSchema = new mongoose.Schema(
     },
     discountPrice: {
       type: Number,
-      required: function() { return this.offer; }
-      // required: true,
+      // required: function() { return this.offer; }
+      required: true,
+    },
+    discountPrice: {
+      type: Number,
+      required: true,
     },
     imageUrls: {
       type: Array,
       required: true,
     },
-    // userRef: {
-    //   type: String,
-    //   required: true,
-    // },
+    userRef: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+  }
   },
   { timestamps: true }
 );

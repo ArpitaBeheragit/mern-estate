@@ -35,11 +35,13 @@ import { decodeToken } from 'react-jwt'
 export const AuthContext = createContext(null)
 
 export const AuthProvider = (props) => {
-    const [ token, setToken ] = useState(null)
-    const [ isLoggedIn, setIsLoggedIn ] = useState(false)
-    const [ user, setUser ] =  useState(null)
+
+    const [ token, setToken ] = useState(localStorage.getItem("access_token"))
+    const [ isLoggedIn, setIsLoggedIn ] = useState(!!localStorage.getItem("access_token"))
+    const [ user, setUser ] =  useState(decodeToken(localStorage.getItem("access_token"))?.user)
 
     useEffect(()=>{
+        console.log("UseEffect Called");
         const jwttoken = localStorage.getItem("access_token")
         if(jwttoken){
             setToken(jwttoken)
@@ -48,6 +50,8 @@ export const AuthProvider = (props) => {
             setUser(decodedData.user)
         }
     }, [token])
+
+    
 
     const login = (token) => {
         localStorage.setItem("access_token", token)
@@ -61,7 +65,7 @@ export const AuthProvider = (props) => {
     }
     
     return(
-        <AuthContext.Provider value={{token, isLoggedIn, login, logout, user}}>
+        <AuthContext.Provider value={{token, isLoggedIn, login, logout, user, setUser}}>
             {props.children}
         </AuthContext.Provider>
     )

@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth';
 import userService from '../apiservice/UserService';
+import { useAuth } from '../context/userContext';
 
 
 
@@ -45,7 +46,8 @@ const SignUp = () => {
 //     setError(data.message)
 //   }
 const navigate= useNavigate();
-
+const authContext = useAuth()
+const { isLoggedIn,login, logout, user } = authContext
 const usernameRef=useRef();
 const emailRef=useRef();
 const passRef=useRef();
@@ -62,17 +64,18 @@ const handleSubmit = async (e) =>{
     password: passRef.current.value,
     
   }
-  // console.log(newUSer);
+  
   setLoading(true);
   const res = await userService.registerUser(newUSer);
-  // console.log(res+"res");
+  
   if(res.status){
     setMessage("New User Added")
+    login(res.data.token)
     usernameRef.current.value=""
     emailRef.current.value=""
    passRef.current.value=""
     setLoading(false);
-    navigate('/signin')
+    navigate('/')
   } else {
     setLoading(false);
     setMessage(res.message)

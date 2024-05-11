@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import {
   getDownloadURL,
@@ -9,9 +8,12 @@ import {
 import { app } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import listingService from '../apiservice/ListingService';
+import { useAuth } from '../context/userContext';
 
 export default function CreateListing() {
   const navigate = useNavigate();
+  const authContext = useAuth()
+  const { isLoggedIn, logout, user } = authContext
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const addressRef = useRef(null);
@@ -26,6 +28,7 @@ export default function CreateListing() {
   const priceRef = useRef(null);
   const disRef = useRef(null);
   const imageRef = useRef(null);
+  const userRef=useRef(null);
 
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -42,13 +45,14 @@ export default function CreateListing() {
     offer: false,
     parking: false,
     furnished: false,
+    userRef:user.id
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('')
-
+  
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
@@ -139,53 +143,6 @@ export default function CreateListing() {
       });
     }
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Check if required fields are set
-  //   if (
-  //     formData.name &&
-  //     formData.description &&
-  //     formData.address &&
-  //     formData.contact &&
-  //     formData.bedrooms &&
-  //     formData.bathrooms &&
-  //     formData.regularPrice &&
-  //     formData.imageUrls.length > 0
-  //   ) {
-  //     try {
-  //       const res = await listingService.addListing(formData);
-  //       if (res.status) {
-  //         setMessage('Listing Added');
-  //         // Reset form data after successful submission
-  //         setFormData({
-  //           imageUrls: [],
-  //           name: '',
-  //           description: '',
-  //           address: '',
-  //           contact: '',
-  //           type: 'rent',
-  //           bedrooms: 1,
-  //           bathrooms: 1,
-  //           regularPrice: 50,
-  //           discountPrice: 0,
-  //           offer: false,
-  //           parking: false,
-  //           furnished: false,
-  //         });
-  //         // Clear input fields
-  //         // ...
-  //       } else {
-  //         setMessage('Error while adding. Try Again.');
-  //       }
-  //     } catch (err) {
-  //       console.error('Error while adding listing:', err);
-  //       setMessage('Error while adding. Try Again.');
-  //     }
-  //   } else {
-  //     setError('Please fill in all required fields.');
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -198,6 +155,7 @@ export default function CreateListing() {
       formData.bedrooms &&
       formData.bathrooms &&
       formData.regularPrice &&
+      formData.userRef&&
       formData.imageUrls.length > 0
     ) {
       try {
@@ -220,8 +178,7 @@ export default function CreateListing() {
             parking: false,
             furnished: false,
           });
-          // Clear input fields
-          // ...
+          
         } else {
           setMessage('Error while adding. Try Again.');
         }
@@ -462,7 +419,7 @@ export default function CreateListing() {
             ))}
           <button
             disabled={loading || uploading}
-            className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
+            className='p-3 bg-gray-600 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
             {loading ? 'Creating...' : 'Create listing'}
           </button>
@@ -472,4 +429,3 @@ export default function CreateListing() {
     </main>
   );
 }
-

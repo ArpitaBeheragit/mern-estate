@@ -1,5 +1,5 @@
 import express from 'express'
-
+import { verifyToken } from '../utills/verifyUser.js';
 import { 
     getAllListing,
     addListing,
@@ -12,10 +12,11 @@ import {
 
  const listingRouter = express.Router();
 
+
+listingRouter.post("/",verifyToken, addListing)
+listingRouter.delete("/:id",verifyToken, deleteListing)
+listingRouter.put("/:id",verifyToken, updateListing)
+listingRouter.get("/:id",getListingById)
 listingRouter.get("/", getAllListing)
-listingRouter.post("/", addListing)
-listingRouter.get("/:id", getListingById)
-listingRouter.put("/:id", updateListing)
-listingRouter.delete("/:id", deleteListing)
 
 export default listingRouter
