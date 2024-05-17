@@ -43,22 +43,47 @@ class ListingService {
             return {status: false, error: error.response.data}
         } 
     }
-    
 
-    async updateListing(id, listing){
+    async getuserListingById(userId) {
         try {
-            const res = await axios.put(this.api+"listing/"+id, listing)
-            console.log(res.data);
-            return {status: true, data: res.data}
+            
+          const response = await axios.get(`${this.api}listing/user/${userId}`,{
+            headers: {
+                'Authorization': `Bearer ${getToken()}`
+            }
+        });
+          console.log("called");
+          console.log(response);
+          return response.data;
         } catch (error) {
-            console.log(error);
-            return {status: false, error}
+          throw new Error('Error fetching listing by ID');
+        }
+      }
+      
+        
+    async updateListing(formData) {
+        try {
+            console.log("I am here", formData, getToken())
+            const response = await axios.put(`${this.api}listing/${formData._id}`,formData, {
+                headers: {
+                  'Authorization': `Bearer ${getToken()}`
+                }
+              });
+    
+            console.log(response)
+            return {data: response.data, status: true};
+        } catch (error) {
+            throw new Error('Error updating listing');
         }
     }
 
     async deleteListing(id){
         try {
-            const res = await axios.delete(this.api+"listing/"+id)
+            const res = await axios.delete(this.api+"listing/"+id,{
+                headers: {
+                  'Authorization': `Bearer ${getToken()}`
+                }
+              })
             console.log(res.data);
             return {status: true, data: res.data}
         } catch (error) {
@@ -68,4 +93,4 @@ class ListingService {
     }
 }
 const listingService = new ListingService();
-export default listingService
+export default listingService;

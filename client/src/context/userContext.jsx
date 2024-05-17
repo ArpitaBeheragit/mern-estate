@@ -36,9 +36,12 @@ export const AuthContext = createContext(null)
 
 export const AuthProvider = (props) => {
 
-    const [ token, setToken ] = useState(localStorage.getItem("access_token"))
-    const [ isLoggedIn, setIsLoggedIn ] = useState(!!localStorage.getItem("access_token"))
-    const [ user, setUser ] =  useState(decodeToken(localStorage.getItem("access_token"))?.user)
+    // const [ token, setToken ] = useState(localStorage.getItem("access_token"))
+    // const [ isLoggedIn, setIsLoggedIn ] = useState(!!localStorage.getItem("access_token"))
+    // const [ user, setUser ] =  useState(decodeToken(localStorage.getItem("access_token"))?.user)
+    const [ token, setToken ] = useState("")
+    const [ isLoggedIn, setIsLoggedIn ] = useState("")
+    const [ user, setUser ] =  useState("")
 
     useEffect(()=>{
         console.log("UseEffect Called");

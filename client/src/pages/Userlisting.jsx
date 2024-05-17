@@ -10,9 +10,9 @@ const Userlisting = () => {
 
   const getlistingsbyid = async () => {
     try {
-      const res = await listingService.getAllListingById(user.id);
+      const res = await listingService.getuserListingById(user.id);
       console.log('Listing Response:', res); // Log the response
-      setListing(res.data);
+      setListing(res);
     } catch (error) {
       console.error('Error fetching listings:', error);
     }
@@ -31,7 +31,7 @@ if(!listings) return
           <h1 className='text-3xl text-gray-500'>Your Listings</h1>
           
           {
-            listings.map(listing=><ListingItem key={listing._id} listing={listing} ></ListingItem>)
+            listings.map(listing=><ListingItem key={listing._id} listing={listing} getlistingsbyid={getlistingsbyid}></ListingItem>)
           }
         </div>
       

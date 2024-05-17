@@ -5,7 +5,7 @@ const HomePageBody = () => {
     return (
         <div className="relative flex flex-col md:flex-row items-center">
             {/* Video background */}
-            <video className="absolute inset-0 w-full h-customheight object-cover" autoPlay muted loop src={herobackground} type="video/mp4" style={{ filter: "brightness(0.8)" }} />
+            <video className="absolute inset-0 w-full h-customheight object-cover" autoPlay muted loop src='https://ik.imagekit.io/gxfevgd2d/herobackground.mp4?updatedAt=1715613442406' type="video/mp4" style={{ filter: "brightness(0.8)" }} />
         
             {/* Content */}
             <div className="relative mt-64 z-10 text-white text-center md:text-left md:ml-16 lg:self-start">

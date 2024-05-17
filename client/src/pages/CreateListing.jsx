@@ -114,6 +114,7 @@ export default function CreateListing() {
   };
 
   const handleChange = (e) => {
+    setMessage("")
     if (e.target.id === 'sale' || e.target.id === 'rent') {
       setFormData({
         ...formData,
@@ -424,6 +425,7 @@ export default function CreateListing() {
             {loading ? 'Creating...' : 'Create listing'}
           </button>
           {error && <p className='text-red-700 text-sm'>{error}</p>}
+          {message!="Listing Added" ?(<p className='text-red-500 mt-5'>{message}</p>):(<p className='text-green-800 mt-5'>{message}</p>)}
         </div>
       </form>
     </main>

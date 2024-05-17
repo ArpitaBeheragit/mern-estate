@@ -70,7 +70,7 @@ const handleSubmit = async (e) =>{
   
   if(res.status){
     setMessage("New User Added")
-    login(res.data.token)
+    
     usernameRef.current.value=""
     emailRef.current.value=""
    passRef.current.value=""

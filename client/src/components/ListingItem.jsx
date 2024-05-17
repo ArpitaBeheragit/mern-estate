@@ -1,7 +1,32 @@
 import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
+import listingService from '../apiservice/ListingService'; // Import the API service
+import { useState } from 'react';
 
-const ListingItem=({ listing })=> {
+const ListingItem=({ listing, getlistingsbyid })=> {
+
+  
+
+  const handleListingDelete = async (listingId) => {
+    try {
+        
+        const res = await listingService.deleteListing(listingId);
+        console.log(res);
+
+       
+        if (res.status) {
+          getlistingsbyid();
+            console.log('Listing deleted successfully');
+        } else {
+            console.error('Error deleting listing:', res.statusText);
+        }
+    } catch (error) {
+        // Log more details about the error for debugging
+        console.error('Error deleting listing:', error.message, error.response);
+    }
+};
+
+  
   return (
     <div className='bg-white shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]'>
       <Link to={`/listing/${listing._id}`}>
@@ -47,8 +72,18 @@ const ListingItem=({ listing })=> {
           </div>
         </div>
       </Link>
+      <div className='flex flex-row gap-5 ml-4 mb-4 item-center'>
+                <button
+                  onClick={() => handleListingDelete(listing._id)}
+                  className='text-red-700 uppercase'
+                >
+                  Delete
+                </button>
+                <Link to={`/UpdateListing/${listing._id}`}>
+                  <button className='text-green-700 uppercase'>Edit</button>
+                </Link>
+              </div>
     </div>
   );
 }
-
 export default ListingItem;

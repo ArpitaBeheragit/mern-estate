@@ -67,9 +67,10 @@ export const addListing = async (req, res)=>{
 }
 
 
-    export const getListingById = async (req, res, next) => {
+    export const getListingByuserId = async (req, res, next) => {
         try {
           const listing = await ListingModel.find({ userRef: req.params.id });
+          // const listing=await ListingModel.findById(_id)
           if (!listing) {
             return next(errorHandler(404, 'Record not found!'));
           }
@@ -81,11 +82,9 @@ export const addListing = async (req, res)=>{
 
 
 export const updateListing = async(req, res)=>{
-    if (req.user.id !== req.params.id)
-        return next(errorHandler(401, "You are not authorized"));
-     
     try {
         const { id } = req.params
+        
         const listing = await ListingModel.findOneAndUpdate({"_id": id}, req.body, {new: true})
         if(listing){
             res.status(200).json(listing)
@@ -102,9 +101,7 @@ export const updateListing = async(req, res)=>{
 }
 
 export const deleteListing = async(req, res)=>{
-    if (req.user.id !== req.params.id)
-        return next(errorHandler(401, "You are not authorized"));
-     
+    
     try {
         const { id} = req.params
         const listing = await ListingModel.findOneAndDelete({"_id": id})
@@ -121,7 +118,21 @@ export const deleteListing = async(req, res)=>{
         }
     }
 }
-
+export const getListingById = async (req, res, next) => {
+  try {
+    // const listing = await ListingModel.findb({ userRef: req.params.id });
+    // const listing=await ListingModel.findById(_id)
+    const { id } = req.params
+        
+        const listing = await ListingModel.find({"_id": id})
+    if (!listing) {
+      return next(errorHandler(404, 'Record not found!'));
+    }
+    res.status(200).json(listing);
+  } catch (error) {
+    next(error);
+  }
+};
 
       
 
