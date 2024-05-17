@@ -8,7 +8,8 @@ import CreateListing from './pages/CreateListing';
 import Search from './pages/Search';
 import Userlisting from './pages/Userlisting';
 import UpdateListing from './pages/UpdateListing';
-
+import About from './pages/About';
+import Listing from './pages/Listing'
 
 export default function App() {
   return (
@@ -24,6 +25,8 @@ export default function App() {
     <Route path='/search' element={<Search />} />
     <Route path='/userlisting' element={<Userlisting />} />
     <Route path='/UpdateListing/:_id' element={<UpdateListing />} />
+    <Route path='/about' element={<About/>}/>
+    <Route path="/Listing" element={<Listing/>}/>
   </Routes>
   </BrowserRouter>
   
