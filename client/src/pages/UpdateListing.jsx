@@ -38,13 +38,13 @@ export default function UpdateListing() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-console.log(user);
+
   
   useEffect(() => {
         async function fetchListing() {
           try {
             const response = await listingService.getAllListingById(_id);
-            const listingData = response.data[0];
+            const listingData = response.data;
             
             console.log(listingData);
             setFormData({

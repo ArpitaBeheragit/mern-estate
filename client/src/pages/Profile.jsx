@@ -27,12 +27,12 @@ export default function Profile() {
     const getUserProfile = async () => {
         let res = await userService.userProfile()
         if (res.status) {
-            console.log(res.data)
+            
             setUserProfile(res.data)
         }
     }
     useEffect(() => {
-      console.log("useeffect");
+      
         getUserProfile()
     }, [])
 
@@ -48,7 +48,7 @@ export default function Profile() {
     try {
       
       const res = await userService.updateUser(userProfile._id, updatedUser);
-      console.log(res.data);
+      
       
       if (res.status) {
         setMessage("Updated Successfully");
@@ -58,7 +58,7 @@ export default function Profile() {
         setMessage(res.message);
       }
     } catch (error) {
-      console.error("Error updating user:", error);
+      
       setMessage("Failed to update user");
     }
     setLoading(false);
@@ -77,7 +77,7 @@ export default function Profile() {
         setMessage1(res.message);
       }
     }catch (error) {
-      console.error("Error updating user:", error);
+      
       setMessage1("Failed to update user");
     }
   }
@@ -86,10 +86,10 @@ export default function Profile() {
 
 if(!userProfile) return
   return (
-    <div className='p-3 mt-10 max-w-lg mx-auto gap-4'>
-      <h1 className='text-3xl font-semibold text-center mt-16 my-7'>Profile</h1>
-      <form className='flex mt-10 flex-col'>
-        <img src={profileimg} alt="profile" className='rounded-full h-28 w-28 object-cover cursor-pointer self-center mt-2' />
+    <div className='p-3  max-w-lg mx-auto gap-4'>
+      <h1 className='text-3xl font-semibold text-center my-8'>Profile</h1>
+      <form className='flex mt-5 flex-col'>
+        <img src={profileimg} alt="profile" className='rounded-full h-28 w-28 object-cover cursor-pointer self-center ' />
         <input ref={usernameRef} type="text" placeholder='username' id='username' className='border mt-8 p-3 rounded-lg' defaultValue={userProfile.username} />
         <input ref={emailRef} type="email" placeholder='email' id='email' className='border mt-2 p-3 rounded-lg' defaultValue={userProfile.email} />
         <input ref={passRef} type="password" placeholder='password' id='password' className='border mt-2 p-3 rounded-lg' />

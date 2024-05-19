@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
-import listingService from '../apiservice/ListingService'; // Import the API service
+import listingService from '../apiservice/ListingService'; 
 import { useState } from 'react';
-
+import { useAuth } from '../context/userContext';
 const ListingItem=({ listing, getlistingsbyid })=> {
 
+  const authContext = useAuth()  
+  const { isLoggedIn, logout, user } = authContext
   
-
   const handleListingDelete = async (listingId) => {
     try {
         
         const res = await listingService.deleteListing(listingId);
-        console.log(res);
-
+        
        
         if (res.status) {
           getlistingsbyid();
@@ -21,13 +21,14 @@ const ListingItem=({ listing, getlistingsbyid })=> {
             console.error('Error deleting listing:', res.statusText);
         }
     } catch (error) {
-        // Log more details about the error for debugging
+        
         console.error('Error deleting listing:', error.message, error.response);
     }
 };
 
-  
+
   return (
+    <div >
     <div className='bg-white shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]'>
       <Link to={`/listing/${listing._id}`}>
         <img
@@ -36,7 +37,7 @@ const ListingItem=({ listing, getlistingsbyid })=> {
             'https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/Sales_Blog/real-estate-business-compressor.jpg?width=595&height=400&name=real-estate-business-compressor.jpg'
           }
           alt='listing cover'
-          className="w-full transition-transform duration-300 transform hover:scale-105"
+          className="w-full transition-transform duration-300 transform hover:scale-105 h-72 object-cover"
         />
         <div className='p-3 flex flex-col gap-2 w-full'>
           <p className='truncate text-lg font-semibold text-slate-700'>
@@ -72,6 +73,7 @@ const ListingItem=({ listing, getlistingsbyid })=> {
           </div>
         </div>
       </Link>
+      {listing.userRef===user.id && (
       <div className='flex flex-row gap-5 ml-4 mb-4 item-center'>
                 <button
                   onClick={() => handleListingDelete(listing._id)}
@@ -82,7 +84,8 @@ const ListingItem=({ listing, getlistingsbyid })=> {
                 <Link to={`/UpdateListing/${listing._id}`}>
                   <button className='text-green-700 uppercase'>Edit</button>
                 </Link>
-              </div>
+              </div>)}
+    </div>
     </div>
   );
 }

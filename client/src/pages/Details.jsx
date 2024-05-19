@@ -57,7 +57,7 @@ const Details = () => {
                 <Swiper navigation>
                     {listing.imageUrls.map((url)=>(
                         <SwiperSlide key={url}>
-                            <div className='h-[400px]' style={{background:`url(${url}) center no-repeat`,backgroundSize:"cover", objectFit:"cover"}}></div>
+                            <div className='h-[500px]' style={{background:`url(${url}) center no-repeat`,backgroundSize:"cover", objectFit:"cover"}}></div>
                         </SwiperSlide>
                     ))}
                 </Swiper>

@@ -9,7 +9,7 @@ const Header = () => {
     const[search,setsearch]=useState("")
     const navigate=useNavigate()
     const authContext = useAuth()
-    console.log(authContext);
+    
     const { isLoggedIn, logout, user } = authContext
     const[hamburger,setHamburger]=useState(false);
     if(hamburger){

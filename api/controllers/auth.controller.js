@@ -23,7 +23,7 @@ export const signin=async (req, res, next)=>{
         if(!validUser) return next(errorHandler(404, 'User not found!'));
         const validPassword=bcryptjs.compareSync(password, validUser.password);
         if(!validPassword) return next(errorHandler(401, 'Wrong credentials!')); 
-        let token=jwt.sign({user: {id: validUser._id, name: validUser.username, email: validUser.email, password:validUser.password}}, process.env.JWT_SECRET)
+        let token=jwt.sign({user: {id: validUser._id, name: validUser.username, email: validUser.email}}, process.env.JWT_SECRET)
         const {password:pass, ...rest}=validUser._doc
         res.cookie('access_token',token,{httpOnly:true }).status(200).json({token,rest})
     } catch (error) {
@@ -52,27 +52,16 @@ export const google=async(req, res, next)=>{
     }
 }
 export const getProfile = async (req, res) => {
-    // const { access_token } = req.cookies;
-    // if (!access_token) {
-    //     console.log("Token not found in cookies");
-    //     return res.status(401).json({ error: "Unauthorized" });
-    // }
+    
 
     try {
-        // const decoded = jwt.verify(access_token, process.env.JWT_SECRET);
-        // const { id } = decoded.user;
-        
         
         const user = await User.findById(req.user.id);
         if (!user) {
-            console.error("User not found");
             return res.status(404).json({ error: "User not found" });
         }
-
-        console.log("User details:", user);
         res.json(user);
     } catch (error) {
-        console.error("Error fetching user:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }

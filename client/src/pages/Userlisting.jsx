@@ -27,12 +27,15 @@ if(!listings) return
   return (
     <>
       
-        <div className='grid mt-2 lg:grid-cols-4 gap-3 sm:grid-cols-2 md:grid-cols-3'>
-          <h1 className='text-3xl text-gray-500'>Your Listings</h1>
-          
+        <div>
+          <div>
+          <h1 className='text-3xl font-semibold text-center mt-7'>Your Listings</h1>
+          </div>
+          <div className='mt-7 flex flex-wrap gap-4 justify-center'>
           {
             listings.map(listing=><ListingItem key={listing._id} listing={listing} getlistingsbyid={getlistingsbyid}></ListingItem>)
           }
+          </div>
         </div>
       
     </>

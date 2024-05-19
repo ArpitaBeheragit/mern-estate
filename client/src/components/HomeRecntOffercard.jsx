@@ -1,61 +1,95 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import cardimage from "../assets/cardimage.png"
-const HomeRecntOffercard = ({offername,offers}) => {
+import { Link } from 'react-router-dom'
+import ListingItem from "../components/ListingItem"
+
+const HomeRecntOffercard = () => {
+
+  const[offer, setoffer]=useState([]);
+  const[rent, setrent]=useState([]);
+  const[sale, setsale]=useState([]);
+  
+  useEffect(()=>{
+    const fetchoffer=async()=>{
+      try{
+        const res=await fetch(`http://localhost:3000/listing?offer=true&limit=3`);
+        const data=await res.json();
+        setoffer(data);
+        fetchrent();
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+
+    const fetchrent=async()=>{
+      try {
+        const res=await fetch(`http://localhost:3000/listing?type=rent&limit=3`);
+        const data=await res.json();
+        setrent(data);
+        fetchsale();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const fetchsale=async()=>{
+      try {
+        const res=await fetch(`http://localhost:3000/listing?type=sale&limit=3`);
+        const data=await res.json();
+        setsale(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchoffer()
+  }
+,[])
+
   return (
-    <div className='flex flex-col gap-2 mt-20 mx-5 '>
-      <h1 className='text-3xl text-gray-500'>{offername}</h1>
-      <h1>{offers}</h1>
-      <div className='grid mt-2 lg:grid-cols-4 gap-3 sm:grid-cols-2 md:grid-cols-3'>
-        <div className="max-w-xs  overflow-hidden shadow-lg pb-5 rounded-lg transition-transform duration-300 transform hover:scale-105">
-          <img className="w-full transition-transform duration-300 transform hover:scale-105" src={cardimage} alt="not fit" />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">title</div>
-            <p className="text-gray-700 text-base">description</p>
-            <p className="text-gray-900 font-semibold text-lg mt-2">₹price</p>
+    <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10 justify-center'>
+        {offer && offer.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>Recent offers</h2>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search?offer=true'}>Show more offers</Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {offer.map((listing) => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
           </div>
-          <div className='flex gap-5 mx-5 '>
-            <p >beds</p>
-            <p >baths</p>
+        )}
+        {rent && rent.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>Recent places for rent</h2>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=rent'}>Show more places for rent</Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {rent.map((listing) => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="max-w-xs  overflow-hidden shadow-lg pb-5 rounded-lg transition-transform duration-300 transform hover:scale-105">
-          <img className="w-full transition-transform duration-300 transform hover:scale-105" src={cardimage} alt="not fit" />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">title</div>
-            <p className="text-gray-700 text-base">description</p>
-            <p className="text-gray-900 font-semibold text-lg mt-2">₹price</p>
+        )}
+        {sale && sale.length > 0 && (
+          <div className=''>
+            <div className='my-3'>
+              <h2 className='text-2xl font-semibold text-slate-600'>Recent places for sale</h2>
+              <Link className='text-sm text-blue-800 hover:underline' to={'/search?type=sale'}>Show more places for sale</Link>
+            </div>
+            <div className='flex flex-wrap gap-4'>
+              {sale.map((listing) => (
+                <ListingItem listing={listing} key={listing._id} />
+              ))}
+            </div>
           </div>
-          <div className='flex gap-5 mx-5'>
-            <p>beds</p>
-            <p>baths</p>
-          </div>
-        </div>
-        <div className="max-w-xs  overflow-hidden shadow-lg pb-5 rounded-lg transition-transform duration-300 transform hover:scale-105">
-          <img className="w-full transition-transform duration-300 transform hover:scale-105" src={cardimage} alt="not fit" />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">title</div>
-            <p className="text-gray-700 text-base">description</p>
-            <p className="text-gray-900 font-semibold text-lg mt-2">₹price</p>
-          </div>
-          <div className='flex gap-5  mx-5'>
-            <p>beds</p>
-            <p>baths</p>
-          </div>
-        </div>
-        <div className="max-w-xs  overflow-hidden shadow-lg pb-5 rounded-lg transition-transform duration-300 transform hover:scale-105">
-          <img className="w-full transition-transform duration-300 transform hover:scale-105" src={cardimage} alt="not fit" />
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">title</div>
-            <p className="text-gray-700 text-base">description</p>
-            <p className="text-gray-900 font-semibold text-lg mt-2">₹price</p>
-          </div>
-          <div className='flex gap-5 mx-5'>
-            <p>beds</p>
-            <p>baths</p>
-          </div>
-        </div>
+        )}
       </div>
-    </div>
+
   )
 }
 
