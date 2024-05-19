@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -6,6 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useAuth } from '../context/userContext';
 import profileimg from "../assets/profileimg.png";
 const Header = () => {
+    const[search,setsearch]=useState("")
     const navigate=useNavigate()
     const authContext = useAuth()
     console.log(authContext);
@@ -24,7 +25,26 @@ const Header = () => {
             </div>
         )
     }
+
+    const handlesubmit=(e)=>{
+        e.preventDefault();
+        const urlparams=new URLSearchParams(window.location.search)
+        urlparams.set('searchTerm', search);
+        const searchquery=urlparams.toString();
+        navigate(`/search?${searchquery}`)
+
+    }
+    useEffect(()=>{
+        const urlparams=new URLSearchParams(window.location.search)
+        const searchterm=urlparams.get('searchTerm')
+        if(searchterm){
+            setsearch(searchterm)
+        }
+    },[])
+
+
     return (
+        <div>
         <div className='fixed top-0 left-0 right-0 bg-gray-300 rounded-xl p-3 mx-auto shadow-md items-center z-20'>
             <div className='flex justify-between max-w-7xl mx-auto items-center'>
                 <div className='flex flex-wrap cursor-pointer'>
@@ -32,14 +52,16 @@ const Header = () => {
                     <div className='font-bold text-sm sm:text-xl'>YourEstate</div>
                 </div>
                 <div className='sm:hidden md:flex'>
-                    <form action='' className='bg-slate-100 p-3 rounded-lg flex items-center'>
+                    <form onSubmit={handlesubmit} className='bg-slate-100 p-3 rounded-lg flex items-center'>
                         
                         <input
                             type='text'
                             placeholder='Search...'
                             className='bg-transparent focus:outline-none w-24 sm:w-64'
+                            value={search}
+                            onChange={(e)=> setsearch(e.target.value)}
                         />
-                        <button onClick={()=>navigate("/search")}>
+                        <button >
                             <FaSearch className='text-slate-600' />
                         </button>
                     </form>
@@ -70,6 +92,7 @@ const Header = () => {
                     <RxHamburgerMenu className='custom-icon' onClick={()=>setHamburger(true)}/>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

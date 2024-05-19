@@ -20,8 +20,8 @@ class ListingService {
     async getAllListingById(id){
         try {
             const res = await axios.get(this.api+"listing/"+id)
-            console.log(res.data);
-            return {status: true, data: res.data}
+            console.log(res.data[0]);
+            return {status: true, data: res.data[0]}
         } catch (error) {
             console.log(error);
             return {status: false, error}
