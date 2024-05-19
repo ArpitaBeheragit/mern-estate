@@ -17,10 +17,19 @@ const Header = () => {
             <div className='fixed flex flex-col top-0 left-0 bg-gray-300 rounded-xl p-3 mx-auto shadow-md z-20 w-full items-center'>
                  <RxCross2 className='custom-icon cursor-pointer' onClick={()=>setHamburger(false)}/>
                  <div className='flex flex-col text-center font-bold cursor-pointer'>
-                 <div className='hover:underline cursor-pointer'>Home</div>
-                    <div className='hover:underline cursor-pointer'>About</div>
-                    <div className='hover:underline cursor-pointer'>Listing</div>
-                    <div className='hover:underline cursor-pointer'>Sign in</div>
+                 <div className='hover:underline cursor-pointer'>
+                        <Link to="/">Home</Link></div>
+                    <div className='hover:underline cursor-pointer'>
+                        <Link to="/about">About</Link></div>
+                    <div className='hover:underline cursor-pointer'>
+                        <Link to="/userlisting">Listing</Link></div>
+                        {isLoggedIn ? (
+                             <div className='hover:underline cursor-pointer'>
+                            <Link to="/profiles">Profile</Link></div>
+            ) : (
+                <div className='hover:underline cursor-pointer'>
+                <Link to="/signin">Sign in</Link></div>
+            )}
                 </div>
             </div>
         )
